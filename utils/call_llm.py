@@ -7,9 +7,32 @@ def call_llm(prompt: str) -> str:
         # Get Ollama host from environment variable, default if not set
         ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11435")
         client = ollama.Client(host=ollama_host)
+
+        # Get context window size from environment variable, default to 32768
+        default_num_ctx = 2048 # Keep 2k as default, but configurable
+        num_ctx_str = os.getenv("OLLAMA_NUM_CTX", str(default_num_ctx))
+        try:
+            num_ctx = int(num_ctx_str)
+            if num_ctx <= 0:
+                print(f"Warning: Invalid OLLAMA_NUM_CTX value '{num_ctx_str}'. Using default {default_num_ctx}.")
+                num_ctx = default_num_ctx
+        except ValueError:
+            print(f"Warning: OLLAMA_NUM_CTX is not a valid integer ('{num_ctx_str}'). Using default {default_num_ctx}.")
+            num_ctx = default_num_ctx
+
+        # Get Ollama model name from environment variable, default if not set
+        default_model = 'qwen3:30b-a3b'
+        ollama_model = os.getenv("OLLAMA_MODEL", default_model)
+        if not ollama_model:
+            print(f"Warning: OLLAMA_MODEL environment variable is empty. Using default '{default_model}'.")
+            ollama_model = default_model
+
         response = client.chat(
-            model='qwen3:30b-a3b', # Use the specified model
-            messages=[{'role': 'user', 'content': prompt}]
+            model=ollama_model, # Use the model from env var or default
+            messages=[{'role': 'user', 'content': prompt}],
+            options={
+                'num_ctx': num_ctx  # Use context window size from env var or default
+            }
         )
         # Extract the content from the response
         return response['message']['content']
