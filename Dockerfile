@@ -32,8 +32,7 @@ USER appuser
 # 10. Define environment variables placeholders
 # These MUST be provided at runtime (e.g., docker run -e ANTHROPIC_PROJECT_ID=... -e ANTHROPIC_REGION=...)
 # Do NOT hardcode secrets here.
-ENV ANTHROPIC_REGION=""
-ENV ANTHROPIC_PROJECT_ID=""
+
 
 # 11. Define the command to run the application
 # Uses main.py as the entry point. Arguments like --url can be appended when running the container.
