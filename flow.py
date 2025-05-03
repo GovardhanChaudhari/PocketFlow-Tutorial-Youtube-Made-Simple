@@ -302,7 +302,7 @@ class GenerateHTML(Node):
         shared["html_output"] = exec_res
         
         # Write HTML to file
-        with open("output.html", "w") as f:
+        with open("output/output.html", "w") as f: # Write HTML to output subdir
             f.write(exec_res)
         
         logger.info("Generated HTML output and saved to output.html")

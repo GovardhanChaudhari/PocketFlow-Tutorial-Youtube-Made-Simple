@@ -10,7 +10,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler("youtube_processor.log")
+        logging.FileHandler("output/youtube_processor.log") # Write log to output subdirr.log") # Write log to output subdir
     ]
 )
 logger = logging.getLogger(__name__)
@@ -51,7 +51,7 @@ def main():
     # Report success and output file location
     print("\n" + "=" * 50)
     print("Processing completed successfully!")
-    print(f"Output HTML file: {os.path.abspath('output.html')}")
+    print(f"Output HTML file: {os.path.abspath('output/output.html')}") # Report path in output subdir
     print("=" * 50 + "\n")
 
     return 0

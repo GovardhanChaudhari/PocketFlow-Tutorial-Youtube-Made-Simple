@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  youtube-simplifier:
+    # Build the image using the Dockerfile in the current directory
+    build: .
+    # Load environment variables from the .env file
+    env_file:
+      - .env
+    environment:
+      # Pass the Ollama host URL from the .env file
+      OLLAMA_HOST: ${OLLAMA_HOST}
+    # Mount the local ./output directory to /app in the container
+    # This allows retrieving output.html and youtube_processor.log
+    volumes:
+      # Mount the entire project directory to /app in the container
+      # This ensures the code is present and allows output files
+      # written to /app to appear on the host.
+      - .:/app
+    # Keep stdin open and allocate a tty for interactive prompts
+    stdin_open: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tty: true
+    # Run as the host user to avoid permission issues with mounted volumes
+    user: "${HOST_UID}:${HOST_GID}"
