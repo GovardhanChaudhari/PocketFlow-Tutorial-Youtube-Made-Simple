@@ -33,16 +33,18 @@ usage() {
 }
 
 # Function to check if .env file exists and has values
-# Function to check if .env file exists
+# Function to check if .env file exists and OLLAMA_HOST is set
 check_env() {
   if [ ! -f .env ]; then
     echo "Error: .env file not found. Please create it and ensure OLLAMA_HOST is set."
     exit 1
   fi
-  # Optional: Add a check for OLLAMA_HOST if needed
-  # if ! grep -qE '^OLLAMA_HOST=.+' .env; then
-  #   echo "Warning: OLLAMA_HOST might not be set correctly in .env" >&2
-  # fi
+  # Check if OLLAMA_HOST is set and not empty
+  if ! grep -qE '^OLLAMA_HOST=.+' .env; then
+    echo "Error: OLLAMA_HOST is not set or is empty in .env" >&2
+    echo "Please ensure it is set, e.g., OLLAMA_HOST=http://host.docker.internal:11435" >&2
+    exit 1
+  fi
 }
 
 # Function to ensure the output directory exists
